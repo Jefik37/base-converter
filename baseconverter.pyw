@@ -6,9 +6,17 @@ import tkinter as tk
 # Program made By Jefik
 # Link on GitHub: https://github.com/Jefik37/base-converter
 
+english=['Invalid input.', 'Copy', 'Copied!', 'Base converter', 'Original base:', 'Final base:',
+'Original number:', 'Converted number:', 'CONVERT', 'Copy', 'Invert', 'All', 'Bases', 'Numbers']
+portuguese=['Valor inválido.', 'Copiar', 'Copiado!', 'Conversor de Bases', 'Base original:', 'Base final:',
+'Número original:', 'Número convertido:', 'CONVERTER', 'Copiar', 'Inverter:', 'Tudo', 'Bases', 'Números', ]
+
+language=english
+
 def tentobase(numog, base):
     erro=False
     num=[] #lista para guardar os valores inteiros
+    negativo=False
     if numog[0]=='-':
         numog=numog[1:len(numog)]
         negativo=True
@@ -53,7 +61,7 @@ def tentobase(numog, base):
         elif not erro:
             return num
     else:
-        return 'Valor inválido.'
+        return language[0]
 
 
 
@@ -61,6 +69,7 @@ def basetoten(numog, base):
     erro=False
     newnum=0 #criar variável para o resultado
     num1=numog.lower() #deixar tudo em minúsculo
+    negativo=False
     if num1[0]=='-':
         negativo=True
         num1=num1[1:len(num1)]
@@ -88,12 +97,12 @@ def basetoten(numog, base):
     if not erro:
         return str(newnum)
     else:
-        return 'Valor inválido.'
+        return language[1]
 
 
 
 def calcular():
-    copiarbtn['text']='Copiar'
+    copiarbtn['text']=language[1]
     baseorigem=int(ent_baseog.get())
     basefinal=int(ent_basefinal.get())
     num=(nmr.get()).replace(' ', '')
@@ -104,7 +113,7 @@ def calcular():
             nmr2['text']=basetoten(num, baseorigem)
         elif baseorigem!=10 and basefinal!=10: #caso nenhuma das bases for 10, o que exige um passo extra
             numto10=basetoten(num, baseorigem)
-            if numto10!='Valor inválido.':
+            if numto10!=language[0]:
                 nmr2['text']=tentobase(numto10, basefinal)
             else:
                 nmr2['text']=numto10
@@ -118,7 +127,7 @@ def inverterbase():
     ent_basefinal.insert(0, base1)
 
 def inverterval():
-    if nmr2['text']!='Valor inválido.' or (nmr.get()=='' and nmr2['text']==''):
+    if nmr2['text']!=language[0] or (nmr.get()=='' and nmr2['text']==''):
         nmr.delete(0, tk.END)
         nmr.insert(0, nmr2['text'])
         nmr2['text']=''
@@ -133,10 +142,10 @@ def copy2clip(txt):
     return subprocess.check_call(cmd, shell=True)
 
 def copiar():
-    if nmr2['text']!='' and nmr2['text']!='Valor inválido.':
+    if nmr2['text']!='' and nmr2['text']!=language[0]:
         numero=nmr2['text']
         copy2clip(numero)
-        nmr2['text']='Copiado!'
+        nmr2['text']=language[2]
         window.update()
         time.sleep(1)
         nmr2['text']=numero
@@ -145,14 +154,14 @@ def enter(x):
     if(x.char)=='\r':
         calcular()
 
-cor="#303030" #padrão: #f0f0f0
+cor='#303030' #padrão: #f0f0f0
 cortexto='#989898'
 corfonte='white'
 window=tk.Tk()
-window.title("Conversor de Bases")
+window.title(language[3])
 window.resizable(False, False)
 window.config(bg = cor)
-window.bind("<Key>", enter)
+window.bind('<Key>', enter)
 
 for i in range(0,9):
     window.columnconfigure(i, weight=1)
@@ -161,61 +170,61 @@ window.rowconfigure(9, weight=1, minsize=15)
 
 
 
-lbl_baseog = tk.Label(text="Base original:")
+lbl_baseog = tk.Label(text=language[4])
 ent_baseog = tk.Entry(width=7)
 lbl_baseog.grid(row=0, column=0, sticky='e', padx=(15, 0))
 ent_baseog.grid(row=0, column=1, sticky='w')
 lbl_baseog.config(bg = cor, fg= corfonte)
 
 
-lbl_basefinal = tk.Label(text="Base final:")
+lbl_basefinal = tk.Label(text=language[5])
 ent_basefinal = tk.Entry(width=7)
 lbl_basefinal.grid(row=0, column=1, sticky='e', padx=(80, 0))
 ent_basefinal.grid(row=0, column=2, sticky='w', padx=(0, 15))
 lbl_basefinal.config(bg = cor, fg= corfonte)
 
 
-nmrlbl = tk.Label(text='Número original:')
+nmrlbl = tk.Label(text=language[6])
 nmr = tk.Entry(width=43)
 nmrlbl.grid(row=6, column=0, columnspan=5, sticky='w', padx=(15, 0))
 nmr.grid(row=7, column=0, columnspan=5, sticky='w', padx=(15, 0))
 nmrlbl.config(bg = cor, fg= corfonte)
 
 
-nmr2lbl = tk.Label(text='Número convertido:')
+nmr2lbl = tk.Label(text=language[7])
 nmr2 = tk.Label(relief=tk.SUNKEN, width=28, bg='white')
 nmr2lbl.grid(row=8, column=0, columnspan=5, sticky='w', padx=(15, 0))
 nmr2.grid(row=9, column=0, columnspan=5, sticky='w', padx=(15, 0))
 nmr2lbl.config(bg = cor, fg= corfonte)
 
 
-btn = tk.Button(text='CONVERTER', height=4, width=15, command=calcular, font=60)
+btn = tk.Button(text=language[8], height=4, width=15, command=calcular, font=60)
 btn.grid(row=11, column=0, columnspan=5, sticky='e', pady=(5, 15), padx=15)
 btn.config(bg = cortexto)
 
 
-copiarbtn = tk.Button(text='Copiar', command=copiar, width='7')
+copiarbtn = tk.Button(text=language[1], command=copiar, width='7')
 copiarbtn.grid(row=9, column=0, columnspan=5, sticky='e', padx=15)
 copiarbtn.config(bg = cortexto)
 
 
-txtinv = tk.Label(text='Inverter:')
+txtinv = tk.Label(text=language[9])
 txtinv.grid(row=10, column=0, columnspan=5, sticky='nw', padx=15)
 txtinv.config(bg = cor, fg= corfonte)
 
 
-btn4 = tk.Button(text='Tudo', height=1, width=7, command=inverter)
+btn4 = tk.Button(text=language[10], height=1, width=7, command=inverter)
 btn4.grid(row=11, column=0, sticky='nw', padx=15, pady=(5,0))
 btn4.config(bg = cortexto)
 
 
-btn2 = tk.Button(text='Bases', height=1, width=7, command=inverterbase)
+btn2 = tk.Button(text=language[11], height=1, width=7, command=inverterbase)
 btn2.grid(row=11, column=0, sticky='w', pady=(0, 10), padx=15)
 btn2.config(bg = cortexto)
 
 
 
-btn3 = tk.Button(text='Números', height=1, command=inverterval)
+btn3 = tk.Button(text=language[12], height=1, width=7, command=inverterval)
 btn3.grid(row=11, column=0, sticky='sw', pady=(0, 15), padx=15)
 btn3.config(bg = cortexto)
 
