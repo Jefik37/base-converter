@@ -2,17 +2,21 @@ import subprocess
 import math
 import time
 import tkinter as tk
-import tkinter.ttk as ttk
+
+# Program made By Jefik
+# Link on GitHub: https://github.com/Jefik37/base-converter
 
 def tentobase(numog, base):
     erro=False
     num=[] #lista para guardar os valores inteiros
+    if numog[0]=='-':
+        numog=numog[1:len(numog)]
+        negativo=True
     decimais1=[] #lista para guardar os valores decimais, esta linha serve somente para não dar erro no return
     if '.' in numog: #checar decimais
         numseparado=numog.split('.') #separar inteiros e decimais
         numog=numseparado[0] #definir inteiros
         decimais=int(numseparado[1])/10**(len(numseparado[1])) #definir decimais e separar casas em lista
-
         decimais1=['.'] #lista para guardar os valores decimais
         while decimais!=int(decimais) and len(decimais1)<17: #calcular os decimais
             decimais*=base
@@ -39,7 +43,10 @@ def tentobase(numog, base):
                 if num[i]>=10:
                     num[i]=chr(num[i]+55)
                 num[i]=str(num[i])
+            if negativo:
+                num.append('-')
             num=''.join(num[::-1]) #transformar a lista em uma string
+
 
         if decimais1!=[]:
             return f'{num}{decimais1}'
@@ -54,7 +61,9 @@ def basetoten(numog, base):
     erro=False
     newnum=0 #criar variável para o resultado
     num1=numog.lower() #deixar tudo em minúsculo
-
+    if num1[0]=='-':
+        negativo=True
+        num1=num1[1:len(num1)]
     if '.' in num1: #checar decimais
         numseparado=num1.split('.') #separar inteiros e decimais
         num1=numseparado[0] #definir inteiros
@@ -74,6 +83,8 @@ def basetoten(numog, base):
         if int(num[i])>=base: #caso tenha alguma letra inválida:
             erro=True
         newnum+=int(num[i])*base**(len(num)-i-1) #valor+=dígito*(a sua posição). ex b(base 12)=11*12^0(base 10)
+    if negativo:
+        newnum*=(-1)
     if not erro:
         return str(newnum)
     else:
@@ -172,7 +183,7 @@ nmrlbl.config(bg = cor, fg= corfonte)
 
 
 nmr2lbl = tk.Label(text='Número convertido:')
-nmr2 = tk.Label(relief=tk.SUNKEN, width=30, bg='white')
+nmr2 = tk.Label(relief=tk.SUNKEN, width=28, bg='white')
 nmr2lbl.grid(row=8, column=0, columnspan=5, sticky='w', padx=(15, 0))
 nmr2.grid(row=9, column=0, columnspan=5, sticky='w', padx=(15, 0))
 nmr2lbl.config(bg = cor, fg= corfonte)
@@ -193,13 +204,13 @@ txtinv.grid(row=10, column=0, columnspan=5, sticky='nw', padx=15)
 txtinv.config(bg = cor, fg= corfonte)
 
 
-btn4 = tk.Button(text='Tudo', height=1, command=inverter)
-btn4.grid(row=11, column=0, sticky='nw', padx=15)
+btn4 = tk.Button(text='Tudo', height=1, width=7, command=inverter)
+btn4.grid(row=11, column=0, sticky='nw', padx=15, pady=(5,0))
 btn4.config(bg = cortexto)
 
 
-btn2 = tk.Button(text='Bases', height=1, command=inverterbase)
-btn2.grid(row=11, column=0, sticky='w', pady=(0, 15), padx=15)
+btn2 = tk.Button(text='Bases', height=1, width=7, command=inverterbase)
+btn2.grid(row=11, column=0, sticky='w', pady=(0, 10), padx=15)
 btn2.config(bg = cortexto)
 
 
